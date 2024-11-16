@@ -1,5 +1,30 @@
-Image filter app where user can import an image, apply a filter and download the image
+# Image Filter Application
+This project is a full-stack web application built with Next.js, Sharp, and Cloudinary, allowing users to upload images, apply filters, and download the processed image. 
 
-Main logic for the filters is in /app/utils/IOhandler.js
+It supports PNG and JPEG files.
 
-/api/process passes the image and which filter to use to IOhandler.js
+
+## Features
+- Upload images in PNG or JPEG format.
+- Apply a variety of filters, including:
+    - Grayscale
+    - Invert
+    - Sepia
+    - Brightness
+    - Contrast
+    - Threshold
+    - Vintage
+    - Warm
+    - Cool
+    - Fade
+    - Dramatic
+    - Vibrant
+- Processed images are uploaded to Cloudinary for storage.
+- Download the processed image directly from the application.
+
+
+## Tech Stack
+Frontend: React.js with Next.js 
+Backend: Next.js API routes, Sharp for image processing
+Storage: Cloudinary for image hosting
+Styling: Tailwind CSS

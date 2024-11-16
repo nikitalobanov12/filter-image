@@ -7,9 +7,9 @@ export default function UploadPage() {
 	const [filter, setFilter] = useState('grayscale'); //initialize the filter with grayscale
 	const [outputUrl, setOutputUrl] = useState(null);
 
-	const handleUpload = async e => {
-		e.preventDefault();
-		if (!file || !filter) return alert('Please select a file and filter');
+	const handleUpload = async event => {
+		event.preventDefault(); 
+		if (!file) return alert('Please upload a file'); //if there is no file in the form, send an alert to the user. 
 
 		const formData = new FormData();
 		formData.append('file', file);
@@ -53,7 +53,7 @@ export default function UploadPage() {
 						type="file"
 						className="w-full px-4 py-2 bg-neutral-800 text-neutral-100 border border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
 						accept="image/png, image/jpeg" // Allow PNG and JPEG
-						onChange={e => setFile(e.target.files[0])}
+						onChange={event => setFile(event.target.files[0])}
 					/>
 				</label>
 				<label className="block text-left text-neutral-300">
@@ -62,7 +62,7 @@ export default function UploadPage() {
 					</span>
 					<select
 						className="w-full px-4 py-2 bg-neutral-800 text-neutral-100 border border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-						onChange={e => setFilter(e.target.value)}
+						onChange={event => setFilter(event.target.value)}
 					>
 						<option
 							value=""

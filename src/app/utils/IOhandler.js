@@ -1,7 +1,3 @@
-// /utils/IOhandler.js
-const fs = require('fs');
-const { PNG } = require('pngjs');
-
 const filters = {
   grayscale: (data, width, height) => {
     for (let y = 0; y < height; y++) {

@@ -12,11 +12,9 @@
     "cloudinary": "^2.5.1",
     "next": "15.0.3",
     "next-cloudinary": "^6.16.0",
-    "pngjs": "^7.0.0",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
-    "sharp": "^0.33.5",
-    "yauzl-promise": "^4.0.0"
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "eslint": "^8",

@@ -1,6 +1,4 @@
 import { v2 as cloudinary } from 'cloudinary';
-import { PNG } from 'pngjs';
-import applyFilter from '@/app/utils/IOhandler';
 import { NextResponse } from 'next/server';
 import sharp from 'sharp';
 
@@ -14,16 +12,8 @@ export async function POST(req) {
 	try {
 		console.log('api route called');
 		const data = await req.formData();
-		const file = data.get('file'); // Get the uploaded file
-		const filter = data.get('filter'); // Get the selected filter
-
-		// Validate input
-		if (!file || !filter) {
-			return NextResponse.json(
-				{ error: 'Missing file or filter' },
-				{ status: 400 }
-			);
-		}
+		const file = data.get('file'); 
+		const filter = data.get('filter'); 
 
 		// Validate file type
 		const validTypes = ['image/png', 'image/jpeg'];
@@ -38,68 +28,67 @@ export async function POST(req) {
 
 		// Read file buffer
 		const fileBuffer = Buffer.from(await file.arrayBuffer());
-		console.log('File buffer size:', fileBuffer.length);
 
 		// Process the image with sharp
 		let image = sharp(fileBuffer);
 
 		// Apply filter logic using sharp
-    switch (filter) {
-      case 'grayscale':
-        image = image.grayscale();
-        break;
+		switch (filter) {
+			case 'grayscale':
+				image = image.grayscale();
+				break;
 
-      case 'invert':
-        image = image.negate();
-        break;
+			case 'invert':
+				image = image.negate();
+				break;
 
-      case 'sepia':
-        image = image.recomb([
-          [0.393, 0.769, 0.189],
-          [0.349, 0.686, 0.168],
-          [0.272, 0.534, 0.131],
-        ]);
-        break;
+			case 'sepia':
+				image = image.recomb([
+					[0.393, 0.769, 0.189],
+					[0.349, 0.686, 0.168],
+					[0.272, 0.534, 0.131],
+				]);
+				break;
 
-      case 'brightness':
-        image = image.modulate({ brightness: 1.5 }); // Brighten by 50%
-        break;
+			case 'brightness':
+				image = image.modulate({ brightness: 1.5 }); 
+				break;
 
-      case 'contrast':
-        image = image.linear(2, -128); // Increase contrast
-        break;
+			case 'contrast':
+				image = image.linear(2, -128);
+				break;
 
-      case 'threshold':
-        image = image.threshold(128); // Binary threshold
-        break;
+			case 'threshold':
+				image = image.threshold(128); 
+				break;
 
-      case 'vintage':
-        image = image.tint({ r: 230, g: 190, b: 160 }); // Soft warm tint
-        break;
+			case 'vintage':
+				image = image.tint({ r: 230, g: 190, b: 160 }); 
+				break;
 
-      case 'warm':
-        image = image.modulate({ saturation: 1.2, brightness: 1.1 }); // Boost warmth
-        break;
+			case 'warm':
+				image = image.modulate({ saturation: 1.2, brightness: 1.1 });
+				break;
 
-      case 'cool':
-        image = image.modulate({ hue: 220, saturation: 0.9 }); // Cool tone adjustment
-        break;
+			case 'cool':
+				image = image.modulate({ hue: 220, saturation: 0.9 }); 
+				break;
 
-      case 'fade':
-        image = image.modulate({ brightness: 0.85, saturation: 0.85 }); // Faded effect
-        break;
+			case 'fade':
+				image = image.modulate({ brightness: 0.85, saturation: 0.85 }); 
+				break;
 
-      case 'dramatic':
-        image = image.linear(1.5, -50).modulate({ saturation: 1.1 }); // High contrast, slight boost in saturation
-        break;
+			case 'dramatic':
+				image = image.linear(1.5, -50).modulate({ saturation: 1.1 }); 
+				break;
 
-      case 'vibrant':
-        image = image.modulate({ saturation: 1.5 }); // Boost colors vibrantly
-        break;
+			case 'vibrant':
+				image = image.modulate({ saturation: 1.5 }); 
+				break;
 
-      default:
-        console.log('Unknown filter, no changes applied');
-    }
+			default:
+				console.log('Unknown filter, no changes applied');
+		}
 
 		// Convert processed image to buffer
 		const processedBuffer = await image.toBuffer();
@@ -110,10 +99,10 @@ export async function POST(req) {
 			const uploadStream = cloudinary.uploader.upload_stream(
 				{
 					folder: 'processed_images',
-					use_filename: true,
-					unique_filename: false,
+					use_filename: false,
+					unique_filename: true,
 					overwrite: true,
-					resource_type: 'image', // Ensure Cloudinary treats it as an image
+					resource_type: 'image', 
 				},
 				(error, result) => {
 					if (error) {
@@ -124,11 +113,8 @@ export async function POST(req) {
 					}
 				}
 			);
-			uploadStream.end(processedBuffer); // Send processed image buffer to Cloudinary
-		});
+			uploadStream.end(processedBuffer); });
 
-
-		// Return the secure URL of the uploaded image
 		return NextResponse.json({ url: uploadResult.secure_url });
 	} catch (error) {
 		console.error('Error in /api/process:', error.message);
