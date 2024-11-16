@@ -1,4 +1,4 @@
-Image filter app where user can import an image, apply a filter and download the image 
+Image filter app where user can import an image, apply a filter and download the image
 
 Main logic for the filters is in /app/utils/IOhandler.js
 
