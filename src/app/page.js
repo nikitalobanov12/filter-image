@@ -8,34 +8,33 @@ export default function UploadPage() {
 	const [outputUrl, setOutputUrl] = useState(null);
 
 	const handleUpload = async e => {
-    e.preventDefault();
-    if (!file || !filter) return alert('Please select a file and filter');
-  
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('filter', filter);
-  
-    try {
-      const res = await fetch('/api/process', {
-        method: 'POST',
-        body: formData,
-      });
-  
-      if (!res.ok) {
-        const errorData = await res.json();
-        alert(`Error: ${errorData.error || 'Unknown error occurred'}`);
-        return;
-      }
-  
-      const data = await res.json();
-      // console.log('Output URL:', data.url); // Log the URL
-      setOutputUrl(data.url);
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      alert('An unexpected error occurred. Please try again.');
-    }
-  };
-  
+		e.preventDefault();
+		if (!file || !filter) return alert('Please select a file and filter');
+
+		const formData = new FormData();
+		formData.append('file', file);
+		formData.append('filter', filter);
+
+		try {
+			const res = await fetch('/api/process', {
+				method: 'POST',
+				body: formData,
+			});
+
+			if (!res.ok) {
+				const errorData = await res.json();
+				alert(`Error: ${errorData.error || 'Unknown error occurred'}`);
+				return;
+			}
+
+			const data = await res.json();
+			// console.log('Output URL:', data.url); // Log the URL
+			setOutputUrl(data.url);
+		} catch (error) {
+			console.error('Error uploading file:', error);
+			alert('An unexpected error occurred. Please try again.');
+		}
+	};
 
 	return (
 		<div className="p-8">
@@ -53,7 +52,7 @@ export default function UploadPage() {
 					<input
 						type="file"
 						className="w-full px-4 py-2 bg-neutral-800 text-neutral-100 border border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-						accept="image/png"
+						accept="image/png, image/jpeg" // Allow PNG and JPEG
 						onChange={e => setFile(e.target.files[0])}
 					/>
 				</label>
@@ -74,16 +73,16 @@ export default function UploadPage() {
 						</option>
 						<option value="grayscale">Grayscale</option>
 						<option value="invert">Invert</option>
-						<option value="sepiaFilter">Sepia</option>
-						<option value="brightnessFilter">Brightness</option>
-						<option value="contrastFilter">Contrast</option>
-						<option value="thresholdFilter">Threshold</option>
-						<option value="vintageFilter">Vintage</option>
-						<option value="warmFilter">Warm</option>
-						<option value="coolFilter">Cool</option>
-						<option value="fadeFilter">Fade</option>
-						<option value="dramaticFilter">Dramatic</option>
-						<option value="vibrantFilter">Vibrant</option>
+						<option value="sepia">Sepia</option>
+						<option value="brightness">Brightness</option>
+						<option value="contrast">Contrast</option>
+						<option value="threshold">Threshold</option>
+						<option value="vintage">Vintage</option>
+						<option value="warm">Warm</option>
+						<option value="cool">Cool</option>
+						<option value="fade">Fade</option>
+						<option value="dramatic">Dramatic</option>
+						<option value="vibrant">Vibrant</option>
 						<option value="original">Original</option>
 					</select>
 				</label>
