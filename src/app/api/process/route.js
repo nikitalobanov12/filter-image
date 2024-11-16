@@ -11,24 +11,23 @@ cloudinary.config({
 });
 
 export async function POST(req) {
-  const data = await req.formData();
-  const file = data.get('file');
-  const filter = data.get('filter');
-
-  if (!file || !filter) {
-    return NextResponse.json({ error: 'Missing file or filter' }, { status: 400 });
-  }
-
-  const tempDir = path.join(process.cwd(), 'temp');
-  await fs.mkdir(tempDir, { recursive: true });
-
-  const filePath = path.join(tempDir, file.name);
-  const outputFile = path.join(tempDir, `${path.basename(file.name, '.png')}-${filter}.png`);
-
-  await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
-  await applyFilter(filePath, outputFile, filter);
-
   try {
+    const data = await req.formData();
+    const file = data.get('file');
+    const filter = data.get('filter');
+  
+    if (!file || !filter) {
+      return NextResponse.json({ error: 'Missing file or filter' }, { status: 400 });
+    }
+  
+    const tempDir = path.join(process.cwd(), 'temp');
+    await fs.mkdir(tempDir, { recursive: true });
+  
+    const filePath = path.join(tempDir, file.name);
+    const outputFile = path.join(tempDir, `${path.basename(file.name, '.png')}-${filter}.png`);
+  
+    await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
+    await applyFilter(filePath, outputFile, filter);
     // Upload processed file to Cloudinary
     const result = await cloudinary.uploader.upload(outputFile, {
       folder: 'processed_images',
@@ -39,7 +38,8 @@ export async function POST(req) {
 
     return NextResponse.json({ url: result.secure_url });
   } catch (error) {
-    console.error('Cloudinary upload error:', error);
-    return NextResponse.json({ error: 'Cloudinary upload failed' }, { status: 500 });
+    console.error('Error in /api/process:', error.message);
+    console.error(error.stack);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
