@@ -8,25 +8,34 @@ export default function UploadPage() {
 	const [outputUrl, setOutputUrl] = useState(null);
 
 	const handleUpload = async e => {
-		e.preventDefault();
-		if (!file || !filter) return alert('Please select a file and filter');
-
-		const formData = new FormData();
-		formData.append('file', file);
-		formData.append('filter', filter);
-
-		const res = await fetch('/api/process', {
-			method: 'POST',
-			body: formData,
-		});
-
-		const data = await res.json();
-		if (data.error) {
-			alert(data.error);
-		} else {
-			setOutputUrl(data.url);
-		}
-	};
+    e.preventDefault();
+    if (!file || !filter) return alert('Please select a file and filter');
+  
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filter', filter);
+  
+    try {
+      const res = await fetch('/api/process', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(`Error: ${errorData.error || 'Unknown error occurred'}`);
+        return;
+      }
+  
+      const data = await res.json();
+      // console.log('Output URL:', data.url); // Log the URL
+      setOutputUrl(data.url);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('An unexpected error occurred. Please try again.');
+    }
+  };
+  
 
 	return (
 		<div className="p-8">

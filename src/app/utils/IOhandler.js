@@ -139,22 +139,10 @@ original: (data, width, height) => {
 }
 };
 
-const applyFilter = async (input, output, filterName) => {
+export const applyFilter = (data, width, height, filterName) => {
   const filterFunction = filters[filterName];
   if (!filterFunction) throw new Error('Invalid filter');
-
-  return new Promise((resolve, reject) => {
-    fs.createReadStream(input)
-      .pipe(new PNG({ filterType: 4 }))
-      .on('parsed', function () {
-        filterFunction(this.data, this.width, this.height);
-        this.pack()
-          .pipe(fs.createWriteStream(output))
-          .on('finish', resolve)
-          .on('error', reject);
-      })
-      .on('error', reject);
-  });
+  filterFunction(data, width, height);
 };
 
 export default applyFilter;
