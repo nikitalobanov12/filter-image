@@ -47,7 +47,7 @@ export default function UploadPage() {
 			>
 				<label className="block text-left text-neutral-300">
 					<span className="block mb-2 font-medium">
-						Upload Image (PNG Only):
+						Upload Image (PNG or JPEG):
 					</span>
 					<input
 						type="file"
