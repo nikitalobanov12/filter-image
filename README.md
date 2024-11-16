@@ -25,6 +25,9 @@ It supports PNG and JPEG files.
 
 ## Tech Stack
 Frontend: React.js with Next.js 
+
 Backend: Next.js API routes, Sharp for image processing
+
 Storage: Cloudinary for image hosting
+
 Styling: Tailwind CSS
