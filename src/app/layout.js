@@ -8,7 +8,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
-			<body className=' bg-neutral-800 text-neutral-200 container mx-auto max-w-5xl text-center '>{children}</body>
+			<body className=' bg-gradient-to-b from-gray-800 to-gray-900 text-neutral-200 container mx-auto max-w-5xl text-center '>{children}</body>
 		</html>
 	);
 }
