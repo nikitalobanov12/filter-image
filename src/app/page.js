@@ -42,9 +42,6 @@ export default function UploadPage() {
 	return (
 		<div className="p-8  min-h-screen text-neutral-100">
 			<header className="text-center mb-12">
-				<h1 className="text-6xl font-extrabold text-blue-400">
-					Image Magic
-				</h1>
 				<p className="text-lg mt-4 text-neutral-300">
 					Upload your image, apply creative filters, and download the
 					masterpiece!
